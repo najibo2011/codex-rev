@@ -1,0 +1,142 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum EntitlementSource {
+  one_off
+  bundle
+  subscription
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  passwordHash  String?
+  accounts      Account[]
+  sessions      Session[]
+  orders        Order[]
+  entitlements  Entitlement[]
+  subscriptions Subscription[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Product {
+  id               String           @id
+  slug             String           @unique
+  title            String
+  description      String
+  price            Int
+  category         String
+  coverUrl         String
+  pdfKey           String
+  shortBulletPoints String[]
+  tableOfContents  String[]
+  isBundle         Boolean          @default(false)
+  bundleItemIds    String[]         @default([])
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  orderItems       OrderItem[]
+  entitlements     Entitlement[]
+}
+
+model Order {
+  id              String       @id @default(cuid())
+  userId          String
+  stripeSessionId String       @unique
+  total           Int
+  currency        String
+  createdAt       DateTime     @default(now())
+  user            User         @relation(fields: [userId], references: [id])
+  items           OrderItem[]
+}
+
+model OrderItem {
+  id         String   @id @default(cuid())
+  orderId    String
+  productId  String
+  unitPrice  Int
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product    Product  @relation(fields: [productId], references: [id])
+}
+
+model Entitlement {
+  id        String            @id @default(cuid())
+  userId    String
+  productId String
+  source    EntitlementSource
+  createdAt DateTime          @default(now())
+  user      User              @relation(fields: [userId], references: [id])
+  product   Product           @relation(fields: [productId], references: [id])
+}
+
+model Post {
+  id          String   @id
+  slug        String   @unique
+  title       String
+  excerpt     String
+  contentMdx  String   @db.Text
+  publishedAt DateTime
+  createdAt   DateTime @default(now())
+}
+
+model Coupon {
+  id             String   @id @default(cuid())
+  code           String   @unique
+  percentOff     Float?
+  amountOff      Int?
+  validFrom      DateTime
+  validTo        DateTime
+  maxRedemptions Int?
+  createdAt      DateTime @default(now())
+}
+
+model Subscription {
+  id               String   @id @default(cuid())
+  userId           String
+  stripeSubId      String   @unique
+  status           String
+  currentPeriodEnd DateTime
+  user             User     @relation(fields: [userId], references: [id])
+}
