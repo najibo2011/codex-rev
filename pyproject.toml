@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vacation-reviews-sync"
+version = "0.1.0"
+description = "Scraper et synchronisation des avis The Hills Residence vers WordPress"
+authors = [{name = "AI Assistant"}]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "beautifulsoup4>=4.12",
+    "requests>=2.31",
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+cloud = ["cloudscraper>=1.2"]
+dev = ["pytest>=7.4"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+addopts = "-q"
