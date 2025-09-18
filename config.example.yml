@@ -1,0 +1,24 @@
+# Exemple de configuration pour synchroniser les avis vers WordPress.
+# Copiez ce fichier sous un autre nom (ex: config.yml) et personnalisez
+# les paramètres ci-dessous.
+
+scraper:
+  # URL de base du site The Hills Residence
+  base_url: "https://vacation.rentals.thehillsresidence.com"
+  # Chemin vers la page listant toutes les propriétés
+  listing_path: "/en/all-properties"
+
+wordpress:
+  # URL de votre site WordPress (sans slash final)
+  base_url: "https://votre-site-wordpress.com"
+  # Identifiants d'une Application Password WordPress pour un compte ayant les droits de publier
+  username: "user@example.com"
+  password: "xxxx xxxx xxxx xxxx"
+  # Associez chaque propriété à l'identifiant du post WordPress correspondant.
+  # La clé peut être le nom affiché ou le slug de l'URL.
+  property_map:
+    "ocean-villa": 123
+    "Panoramic Loft": 456
+
+# Fichier qui mémorise les avis déjà envoyés afin d'éviter les doublons
+state_file: "data/review_state.json"

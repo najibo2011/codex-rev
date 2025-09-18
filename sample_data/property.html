@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Apartment A · The Hills Residence</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LodgingBusiness",
+    "name": "Apartment A",
+    "review": [
+      {
+        "@type": "Review",
+        "name": "Excellent stay",
+        "author": {"@type": "Person", "name": "Alice"},
+        "reviewBody": "Amazing location and service.",
+        "datePublished": "2024-01-15",
+        "reviewRating": {"@type": "Rating", "ratingValue": "4.5"}
+      },
+      {
+        "@type": "Review",
+        "author": "Bob",
+        "reviewBody": "We loved it!",
+        "reviewRating": {"@type": "Rating", "ratingValue": 5}
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <article>
+    <section itemprop="review" itemscope itemtype="https://schema.org/Review">
+      <h3 itemprop="name">Fallback Review</h3>
+      <span itemprop="author">Charlie</span>
+      <div itemprop="reviewBody">Nice flat.</div>
+      <meta itemprop="ratingValue" content="4" />
+      <time itemprop="datePublished" datetime="2023-12-20">20 December 2023</time>
+    </section>
+  </article>
+</body>
+</html>
