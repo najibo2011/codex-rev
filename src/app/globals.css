@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  @apply bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased text-lg;
+}
+
+main {
+  @apply flex-1;
+}
+
+a {
+  @apply text-brand underline-offset-4 hover:underline;
+}
+
+.container {
+  @apply mx-auto max-w-6xl px-6;
+}
